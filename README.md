@@ -1,0 +1,1 @@
+record process of solving algorithm in leetcode platform.
