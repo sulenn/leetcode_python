@@ -11,24 +11,33 @@ class Solution(object):
         level = 2
         curLevelList = [root.left, root.right]
         while len(curLevelList) != 0:
-            for j in range(2**(level-1)/2):
-                if curLevelList[j].val != curLevelList[2**(level-1)-j-1].val:
+            for j in range(len(curLevelList)/2):
+                if not curLevelList[j] and not curLevelList[len(curLevelList)-j-1]:
+                    continue
+                if not curLevelList[j] or not curLevelList[len(curLevelList)-j-1]:
+                    return False
+                if curLevelList[j].val != curLevelList[len(curLevelList)-j-1].val:
                     return False
             nextLevelList = []
-            for i in range(2**(level-1)):
+            for i in range(len(curLevelList)):
                 if curLevelList[i] is not None:
                     nextLevelList += [curLevelList[i].left]
                     nextLevelList += [curLevelList[i].right]
             curLevelList = nextLevelList
+            level += 1
         return True
 
 if __name__ == '__main__':
     n = TreeNode(1)
+    # n.left = TreeNode(2)
+    # n.right = TreeNode(2)
+    # n.left.left = TreeNode(3)
+    # n.left.right = TreeNode(4)
+    # n.right.left = TreeNode(4)
+    # n.right.right = TreeNode(3)
     n.left = TreeNode(2)
     n.right = TreeNode(2)
-    n.left.left = TreeNode(3)
-    n.left.right = TreeNode(4)
-    n.right.left = TreeNode(4)
-    n.right.right = TreeNode(3)
+    n.left.right = TreeNode(3)
+    n.right.left = TreeNode(3)
     s = Solution()
     print s.isSymmetric(n)
