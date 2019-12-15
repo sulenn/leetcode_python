@@ -1,42 +1,36 @@
-def afterOneYear(balance,annInterestRate,minMonthRate):
-    monthInterestRate = annInterestRate / 12.0
-    totalPaid = 0.0
-    for month in range(1, 13):
-        minMonthPaid = round(balance * minMonthRate, 2)
-        principlePaid = round(minMonthPaid - monthInterestRate * balance, 2)
-        balance = round(balance - principlePaid, 2)
-        totalPaid = round(totalPaid + minMonthPaid, 2)
-    return totalPaid, balance
+import matplotlib.pyplot as plt
+from pylab import mpl
+
+mpl.rcParams['font.sans-serif'] = ['SimHei']
 
 
-def inOneYear(balanceInput, annInterestRate):
-    # 请在下面编写代码
-    minMonthPaid = 1
-    month = 0
-    balance = balanceInput
-    minMonthRate = annInterestRate / 12
+# 函数 drawing 传入参数`path`表示文件路径
+def drawing(path):
+    # *********** Begin **********#
+    prov, grades = [], []
+    f = open(path, 'r', encoding='utf8')
     while True:
-        for i in range(12):
-            balance = balance*(1+minMonthRate) - minMonthPaid
-        if balance < 0:
+        line = f.readline()
+        if line == '':
             break
-        balance = balanceInput
-        minMonthPaid += 1
-    # 请不要修改下面的代码
+        flds = line.split()
+        try:
+            grades.append(int(flds[0]))
+            prov.append(flds[1])
+        except:
+            pass
+    gradesRank = sorted(grades)[::-1]
+    gradesRank = gradesRank[:3]
+    provRank = []
+    for i in range(len(gradesRank)):
+        provRank.append(prov[grades.index(gradesRank[i])])
+        plt.text(i, gradesRank[i] - 50, gradesRank[i], ha='center', fontsize=16)
+    plt.bar(range(len(gradesRank)), gradesRank, color='rgb', tick_label=provRank)
+    plt.savefig('./结果/a.png')
+    plt.show()
 
-    return minMonthPaid, month, balance
+    # 将图片文件保存至 `./结果/a.png`
 
+    # *********** End **********#
 
-def inOneYearBiSearch(balanceInput, annInterestRate):
-    down = balanceInput / 12
-    minMonthPaid = 1
-    month = 0
-    balance = balanceInput
-    minMonthRate = annInterestRate / 12
-
-
-    return minMonthPaid, month, balance
-
-# def perMonth(balance, )
-
-print(inOneYear(1200, 0.18))
+drawing("test.txt")
